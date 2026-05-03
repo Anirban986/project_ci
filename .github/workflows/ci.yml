@@ -75,4 +75,4 @@ jobs:
         run: npm test -- --watchAll=false
 
       - name: Build project
-        run: npm run dev
+        run: npm run build
