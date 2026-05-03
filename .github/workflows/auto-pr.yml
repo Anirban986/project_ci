@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Auto PR + Merge
+
+on:
+push:
+branches:
+- "feature/**"
+
+jobs:
+create-pr-and-merge:
+runs-on: ubuntu-latest
+
+
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
+
+  - name: Create Pull Request
+    id: cpr
+    uses: peter-evans/create-pull-request@v6
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      base: main
+      branch: ${{ github.ref_name }}
+      title: "Auto PR: ${{ github.ref_name }}"
+      body: "Automated PR from feature branch"
+
+  - name: Enable Auto Merge
+    if: steps.cpr.outputs.pull-request-number
+    uses: peter-evans/enable-pull-request-automerge@v3
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+      merge-method: squash
+

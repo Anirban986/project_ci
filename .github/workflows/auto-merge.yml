@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Enable Auto Merge
+
+on:
+pull_request:
+types: [opened, synchronize, reopened]
+
+jobs:
+enable-auto-merge:
+runs-on: ubuntu-latest
+
+
+steps:
+  - name: Enable auto-merge
+    uses: peter-evans/enable-pull-request-automerge@v3
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
+      merge-method: squash
+
