@@ -1,0 +1,170 @@
+/* src/styles/globals.css */
+
+/* ── 1. Imports FIRST (before everything) ── */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Inter:wght@300;400;500;600&display=swap");
+@import "tailwindcss";
+
+/* ── 2. Theme tokens ── */
+@theme {
+  --color-brand-50:   #f0f7ff;
+  --color-brand-100:  #e0efff;
+  --color-brand-200:  #b9dcff;
+  --color-brand-300:  #7cc1ff;
+  --color-brand-400:  #36a3ff;
+  --color-brand-500:  #0a84ff;
+  --color-brand-600:  #0066e0;
+  --color-brand-700:  #0052b5;
+  --color-brand-800:  #004494;
+  --color-brand-900:  #003a7a;
+
+  --color-success-50:  #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+
+  --color-warning-50:  #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-500: #f59e0b;
+
+  --color-danger-50:  #fff1f2;
+  --color-danger-100: #ffe4e6;
+  --color-danger-500: #f43f5e;
+  --color-danger-600: #e11d48;
+
+  --color-neutral-50:  #f9fafb;
+  --color-neutral-100: #f3f4f6;
+  --color-neutral-200: #e5e7eb;
+  --color-neutral-300: #d1d5db;
+  --color-neutral-400: #9ca3af;
+  --color-neutral-500: #6b7280;
+  --color-neutral-600: #4b5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1f2937;
+  --color-neutral-900: #111827;
+
+  --font-sans:    "Inter", system-ui, sans-serif;
+  --font-display: "DM Sans", system-ui, sans-serif;
+
+  --shadow-card:       0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+  --shadow-card-hover: 0 4px 12px 0 rgb(0 0 0 / 0.08), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+  --shadow-modal:      0 20px 60px -10px rgb(0 0 0 / 0.15);
+
+  --bottom-nav-height: 64px;
+}
+
+/* ── 3. Base styles ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+ scroll-behavior: smooth;
+
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #f9fafb;
+  color: #111827;
+  min-height: 100dvh;
+  overscroll-behavior: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 9999px; }
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+
+button, a, [role="button"] {
+  min-height: 44px;
+}
+
+/* ── 4. Component classes ── */
+@layer components {
+  .card {
+    @apply bg-white rounded-2xl p-4;
+    box-shadow: var(--shadow-card);
+  }
+
+  .card-hover {
+    @apply transition-shadow duration-200;
+  }
+  .card-hover:hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .section-title {
+    @apply text-base font-semibold text-neutral-800;
+    font-family: var(--font-display);
+  }
+
+  .label {
+    @apply text-xs font-medium text-neutral-500 uppercase tracking-wide;
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-neutral-100 rounded-xl;
+  }
+
+  .btn-primary {
+    @apply bg-brand-500 text-white font-medium rounded-xl px-5 py-3 text-sm
+           transition-all duration-150
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary:hover   { @apply bg-brand-600; }
+  .btn-primary:active  { @apply scale-95; }
+
+  .btn-secondary {
+    @apply bg-brand-50 text-brand-600 font-medium rounded-xl px-5 py-3 text-sm
+           transition-all duration-150;
+  }
+  .btn-secondary:hover  { @apply bg-brand-100; }
+  .btn-secondary:active { @apply scale-95; }
+
+  .btn-ghost {
+    @apply text-neutral-600 font-medium rounded-xl px-5 py-3 text-sm
+           transition-all duration-150;
+  }
+  .btn-ghost:hover  { @apply bg-neutral-100; }
+  .btn-ghost:active { @apply scale-95; }
+
+  .btn-danger {
+    @apply bg-danger-50 text-danger-600 font-medium rounded-xl px-5 py-3 text-sm
+           transition-all duration-150;
+  }
+  .btn-danger:hover  { @apply bg-danger-100; }
+  .btn-danger:active { @apply scale-95; }
+
+  .input {
+    @apply w-full bg-neutral-50 border border-neutral-200 rounded-xl px-4 py-3
+           text-sm text-neutral-800 placeholder:text-neutral-400
+           outline-none transition-all duration-150;
+  }
+  .input:focus {
+    @apply border-brand-400;
+    box-shadow: 0 0 0 3px rgb(10 132 255 / 0.15);
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full;
+  }
+
+  .with-bottom-nav {
+    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 16px));
+  }
+}
+
+/* ── 5. Utilities ── */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+
+  .font-display { font-family: var(--font-display); }
+}

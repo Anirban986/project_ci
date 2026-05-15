@@ -1,0 +1,34 @@
+{
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "project_ci",
+            "connectString": "postgresql://postgres:Anirban%402001@db.merhaehhizqmlpaqztrk.supabase.co:5432/postgres"
+        },
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "testDB",
+            "database": "authDB",
+            "username": "postgres",
+            "password": "Anirban@2001"
+        },
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "localDB",
+            "database": "localTestDB",
+            "username": "postgres",
+            "password": "Anirban@2001"
+        }
+    ]
+}
