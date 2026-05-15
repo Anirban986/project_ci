@@ -6,7 +6,7 @@ beforeEach(async () => {
 
 afterAll(async () => {
 
-  await pool.end();
+ // await pool.end();
 
 });
 

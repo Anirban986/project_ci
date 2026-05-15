@@ -6,7 +6,7 @@ describe("POST /api/auth/login", () => {
   let email;
 
   beforeEach(async () => {
-    await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
+   // await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
 
     email = `login_${Date.now()}@gmail.com`;
 
@@ -30,7 +30,7 @@ describe("POST /api/auth/login", () => {
   });
 
   afterAll(async () => {
-    await pool.end();
+   // await pool.end();
   });
 
   it("should login verified user successfully", async () => {

@@ -11,7 +11,7 @@ describe("POST /api/auth/verify-mfa", () => {
   let adminSecret;
 
   beforeAll(async () => {
-    await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
+   // await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
 
     // ✅ Create admin directly in DB
     const result = await pool.query(
@@ -48,7 +48,7 @@ describe("POST /api/auth/verify-mfa", () => {
 
   afterAll(async () => {
     await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
-    await pool.end();
+   // await pool.end();
   });
 
   it("should verify MFA successfully with valid OTP", async () => {

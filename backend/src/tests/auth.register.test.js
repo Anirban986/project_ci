@@ -4,7 +4,7 @@ const pool = require("../db/pool");
 
 // 🔥 IMPORTANT: isolate DB per test
 beforeEach(async () => {
-  await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
+ // await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
 });
 
 // ❌ DO NOT call pool.end here (moves to global teardown)

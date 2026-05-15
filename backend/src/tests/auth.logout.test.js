@@ -7,7 +7,7 @@ describe("POST /api/auth/logout (JWT cookie)", () => {
   let email;
 
   beforeEach(async () => {
-    await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
+  //  await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
 
     agent = request.agent(app);
     email = `logout_${Date.now()}@gmail.com`;
@@ -40,7 +40,7 @@ describe("POST /api/auth/logout (JWT cookie)", () => {
   });
 
   afterAll(async () => {
-    await pool.end();
+   // await pool.end();
   });
 
   it("should logout user and clear cookie", async () => {

@@ -6,7 +6,7 @@ describe("POST /api/auth/forgot-password", () => {
   const email = `forgot_${Date.now()}@gmail.com`;
 
   beforeAll(async () => {
-    await pool.query("DELETE FROM users");
+   // await pool.query("DELETE FROM users");
 
     await request(app)
       .post("/api/auth/register")
@@ -26,7 +26,7 @@ describe("POST /api/auth/forgot-password", () => {
   });
 
   afterAll(async () => {
-    await pool.end();
+    //await pool.end();
   });
 
   it("should send OTP if user exists", async () => {

@@ -8,7 +8,7 @@ describe("POST /api/auth/verify-code", () => {
   let userId;
 
   beforeEach(async () => {
-    await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
+   // await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
 
     email = `verify_${Date.now()}@gmail.com`;
 
@@ -35,7 +35,7 @@ describe("POST /api/auth/verify-code", () => {
   });
 
   afterAll(async () => {
-    await pool.end();
+    //await pool.end();
   });
 
   it("should verify user with correct OTP", async () => {

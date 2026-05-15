@@ -7,7 +7,7 @@ describe("GET /api/auth/profile (JWT cookie auth)", () => {
   let email;
 
   beforeEach(async () => {
-    await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
+   // await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
 
     agent = request.agent(app);
     email = `profile_${Date.now()}@gmail.com`;
@@ -40,7 +40,7 @@ describe("GET /api/auth/profile (JWT cookie auth)", () => {
   });
 
   afterAll(async () => {
-    await pool.end();
+    //await pool.end();
   });
 
   it("should return user profile when JWT cookie is valid", async () => {
