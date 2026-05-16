@@ -3,7 +3,7 @@ const app = require("../app");
 const pool = require("../db/pool");
 const bcrypt = require("bcrypt");
 
-describe("POST /api/auth/reset-password", () => {
+describe("POST /api/auth/verify-reset-otp", () => {
   const email = `reset_${Date.now()}@gmail.com`;
   let plainOtp;
 
@@ -55,7 +55,7 @@ describe("POST /api/auth/reset-password", () => {
 
   it("should reset password successfully with valid OTP", async () => {
     const res = await request(app)
-      .post("/api/auth/reset-password")
+      .post("/api/auth/verify-reset-otp")
       .send({
         email,
         otp: plainOtp,
@@ -77,7 +77,7 @@ describe("POST /api/auth/reset-password", () => {
 
   it("should fail with invalid OTP", async () => {
     const res = await request(app)
-      .post("/api/auth/reset-password")
+      .post("/api/auth/verify-reset-otp")
       .send({
         email,
         otp: "wrongotp",
@@ -89,7 +89,7 @@ describe("POST /api/auth/reset-password", () => {
 
   it("should fail for unknown user", async () => {
     const res = await request(app)
-      .post("/api/auth/reset-password")
+      .post("/api/auth/verify-reset-otp")
       .send({
         email: "unknown@gmail.com",
         otp: "123456",
