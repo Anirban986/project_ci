@@ -8,10 +8,11 @@ describe("POST /api/auth/verify-reset-otp", () => {
   let plainOtp;
 
   beforeAll(async () => {
-    // ⚠️ safer cleanup than DELETE
-    await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
+    await pool.query(
+      "TRUNCATE TABLE users RESTART IDENTITY CASCADE"
+    );
 
-    // 1. Register user
+    // Register user
     const registerRes = await request(app)
       .post("/api/auth/register")
       .send({
@@ -25,16 +26,19 @@ describe("POST /api/auth/verify-reset-otp", () => {
 
     expect(registerRes.statusCode).toBe(201);
 
-    // 2. Verify email manually
+    // Verify user manually
     await pool.query(
       "UPDATE users SET is_verified = true WHERE email = $1",
       [email]
     );
 
-    // 3. Create forgot password OTP (same logic as service)
+    // Create OTP manually
     plainOtp = "123456";
 
-    const hashedOtp = await bcrypt.hash(plainOtp, 10);
+    const hashedOtp = await bcrypt.hash(
+      plainOtp,
+      10
+    );
 
     await pool.query(
       `
@@ -49,30 +53,23 @@ describe("POST /api/auth/verify-reset-otp", () => {
   });
 
   afterAll(async () => {
-    // IMPORTANT: do NOT call pool.end here if other tests exist
-    // await pool.end(); ❌ remove this
+    // keep empty
   });
 
-  it("should reset password successfully with valid OTP", async () => {
+  it("should verify OTP successfully", async () => {
     const res = await request(app)
       .post("/api/auth/verify-reset-otp")
       .send({
         email,
         otp: plainOtp,
-        newPassword: "newpass123",
       });
 
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty("message");
 
-    // verify password changed
-    const db = await pool.query(
-      "SELECT password FROM users WHERE email = $1",
-      [email]
+    expect(res.body).toHaveProperty(
+      "message",
+      "OTP verified successfully"
     );
-
-    const isMatch = await bcrypt.compare("newpass123", db.rows[0].password);
-    expect(isMatch).toBe(true);
   });
 
   it("should fail with invalid OTP", async () => {
@@ -80,11 +77,15 @@ describe("POST /api/auth/verify-reset-otp", () => {
       .post("/api/auth/verify-reset-otp")
       .send({
         email,
-        otp: "wrongotp",
-        newPassword: "newpass123",
+        otp: "000000",
       });
 
     expect(res.statusCode).toBe(400);
+
+    expect(res.body).toHaveProperty(
+      "message",
+      "Invalid OTP"
+    );
   });
 
   it("should fail for unknown user", async () => {
@@ -93,9 +94,76 @@ describe("POST /api/auth/verify-reset-otp", () => {
       .send({
         email: "unknown@gmail.com",
         otp: "123456",
-        newPassword: "newpass123",
       });
 
     expect(res.statusCode).toBe(400);
+
+    expect(res.body).toHaveProperty(
+      "message",
+      "Invalid request"
+    );
+  });
+
+  it("should fail for expired OTP", async () => {
+    const expiredOtp = await bcrypt.hash(
+      "654321",
+      10
+    );
+
+    await pool.query(
+      `
+      UPDATE users
+      SET reset_password_otp = $1,
+          reset_password_otp_expires = NOW() - INTERVAL '1 minute'
+      WHERE email = $2
+      `,
+      [expiredOtp, email]
+    );
+
+    const res = await request(app)
+      .post("/api/auth/verify-reset-otp")
+      .send({
+        email,
+        otp: "654321",
+      });
+
+    expect(res.statusCode).toBe(400);
+
+    expect(res.body).toHaveProperty(
+      "message",
+      "OTP expired"
+    );
+  });
+
+  it("should fail after too many attempts", async () => {
+    const hashedOtp = await bcrypt.hash(
+      "999999",
+      10
+    );
+
+    await pool.query(
+      `
+      UPDATE users
+      SET reset_password_otp = $1,
+          reset_password_attempts = 5,
+          reset_password_otp_expires = NOW() + INTERVAL '10 minutes'
+      WHERE email = $2
+      `,
+      [hashedOtp, email]
+    );
+
+    const res = await request(app)
+      .post("/api/auth/verify-reset-otp")
+      .send({
+        email,
+        otp: "999999",
+      });
+
+    expect(res.statusCode).toBe(400);
+
+    expect(res.body).toHaveProperty(
+      "message",
+      "Too many attempts. Try again later."
+    );
   });
 });
