@@ -6,7 +6,7 @@ describe("POST /api/auth/forgot-password", () => {
   const email = `forgot_${Date.now()}@gmail.com`;
 
   beforeAll(async () => {
-   // await pool.query("DELETE FROM users");
+    await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
 
     await request(app)
       .post("/api/auth/register")

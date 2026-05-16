@@ -9,7 +9,7 @@ describe("POST /api/auth/reset-password", () => {
 
   beforeAll(async () => {
     // ⚠️ safer cleanup than DELETE
-    //await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
+    await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
 
     // 1. Register user
     const registerRes = await request(app)

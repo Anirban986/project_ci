@@ -8,7 +8,7 @@ describe("POST /api/auth/setup-mfa", () => {
   let adminId;
 
   beforeAll(async () => {
-   // await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
+    await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
 
     const hashedPassword = await bcrypt.hash("123456", 10);
 
