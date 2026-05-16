@@ -8,7 +8,7 @@ describe("POST /api/auth/verify-code", () => {
   let userId;
 
   beforeEach(async () => {
-   // await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
+    await pool.query("TRUNCATE TABLE users RESTART IDENTITY CASCADE");
 
     email = `verify_${Date.now()}@gmail.com`;
 
