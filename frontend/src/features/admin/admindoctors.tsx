@@ -44,7 +44,7 @@ export function AdminDoctors() {
         <StatCard label="Total Doctors"        value={DOCTOR_STATS.total}               color="brand"   icon={<Stethoscope className="w-5 h-5" />} />
         <StatCard label="Available Today"      value={DOCTOR_STATS.availableToday}      color="success" icon={<CheckCircle className="w-5 h-5" />} />
         <StatCard label="Pending Verification" value={DOCTOR_STATS.pendingVerification} color="warning" icon={<Clock className="w-5 h-5" />} />
-        <StatCard label="Offline Now"          value={DOCTOR_STATS.offline}             color="neutral" icon={<WifiOff className="w-5 h-5" />} />
+        <StatCard label="Offline Now"          value={DOCTOR_STATS.offline}             color="teal" icon={<WifiOff className="w-5 h-5" />} />
       </div>
 
       {/* Specialization + top doctors */}
