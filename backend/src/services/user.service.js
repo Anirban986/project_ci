@@ -15,17 +15,19 @@ const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // ================= HELPER =================
-function generateOTP() {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-}
+const Brevo = require("@getbrevo/brevo");
 
-//=================== EMAIL =================
+const brevoClient = Brevo.ApiClient.instance;
+brevoClient.authentications["api-key"].apiKey = process.env.BREVO_API_KEY;
+
+const emailApi = new Brevo.TransactionalEmailsApi();
+
 async function sendOTPEmail(email, code) {
-  await resend.emails.send({
-    from: "onboarding@resend.dev",
-    to: email,
+  await emailApi.sendTransacEmail({
+    sender: { email: "your-registered-brevo-email@gmail.com", name: "MedLink" },
+    to: [{ email }],
     subject: "Verify your email",
-    html: `
+    htmlContent: `
       <div style="font-family:sans-serif;text-align:center;">
         <h2>Email Verification</h2>
         <p>Your verification code is:</p>
