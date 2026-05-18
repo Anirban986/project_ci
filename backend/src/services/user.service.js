@@ -10,9 +10,7 @@ const { generateforgotPasswordOTP } = require("../utils/otp");
 const { sendForgotPasswordOTP } = require("../utils/mailer");
 
 dotenv.config();
-// Email setup
-const { Resend } = require("resend");
-const resend = new Resend(process.env.RESEND_API_KEY);
+
 
 // ================= HELPER =================
 const Brevo = require("@getbrevo/brevo");
