@@ -155,7 +155,7 @@ export function AdminUsers() {
 
         <div className="px-5 pb-5">
           <AdminTable
-            data={filtered as Record<string, unknown>[]}
+            data={filtered as unknown as Record<string, unknown>[]}
             keyField="id"
             columns={[
               {
