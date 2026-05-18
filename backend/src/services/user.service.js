@@ -10,20 +10,19 @@ const { generateforgotPasswordOTP } = require("../utils/otp");
 const { sendForgotPasswordOTP } = require("../utils/mailer");
 
 dotenv.config();
-// Email setup
-const { Resend } = require("resend");
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 // ================= HELPER =================
 function generateOTP() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-//=================== EMAIL =================
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
 async function sendOTPEmail(email, code) {
-  await resend.emails.send({
-    from: "onboarding@resend.dev",
+  await sgMail.send({
     to: email,
+    from: process.env.EMAIL,
     subject: "Verify your email",
     html: `
       <div style="font-family:sans-serif;text-align:center;">

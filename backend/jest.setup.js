@@ -5,6 +5,11 @@ jest.mock("nodemailer", () => ({
   })),
 }));
 
+// Mock SendGrid
+jest.mock("@sendgrid/mail", () => ({
+  setApiKey: jest.fn(),
+  send: jest.fn().mockResolvedValue(true),
+}));
 
 const initDb = require("./src/config/initDb");
 const pool = require("./src/db/pool");
