@@ -8,4 +8,4 @@ export { Modal } from "./Modal";
 export { ProgressBar } from "./ProgressBar";
 export { Skeleton, CardSkeleton, ListSkeleton } from "./Skeleton";
 export { StockBadge } from "./StockBadge";
-export { Toast, ToastContainer } from "./Toast";
+export {  ToastContainer } from "./Toast";
