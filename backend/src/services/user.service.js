@@ -11,8 +11,11 @@ const { sendForgotPasswordOTP } = require("../utils/mailer");
 
 dotenv.config();
 
-
 // ================= HELPER =================
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
