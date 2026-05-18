@@ -26,11 +26,11 @@ async function registerUser(req, res) {
       });
     }
 
-    if (error.message === "Email_send_failed") {
+    /*if (error.message === "Email_send_failed") {
       return res.status(500).json({
         message: "Failed to send verification email",
       });
-    }
+    }*/
 
     console.error("Registration error:", error);
     res.status(500).json({
@@ -107,11 +107,11 @@ async function resendVerification(req, res) {
       return res.status(400).json({ message: "Email already verified" });
     }
 
-    if (error.message === "Email_send_failed") {
+    /*if (error.message === "Email_send_failed") {
       return res.status(500).json({
         message: "Failed to send verification email",
       });
-    }
+    }*/
 
     console.error("Resend error:", error);
     res.status(500).json({
