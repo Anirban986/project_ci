@@ -13,13 +13,13 @@ dotenv.config();
 
 
 // ================= HELPER =================
-const brevo = require("@getbrevo/brevo");
+const SibApiV3Sdk = require("@getbrevo/brevo");
 
-const apiInstance = new brevo.default.TransactionalEmailsApi();
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 apiInstance.authentications["api-key"].apiKey = process.env.BREVO_API_KEY;
 
 async function sendOTPEmail(email, code) {
-  const sendSmtpEmail = new brevo.default.SendSmtpEmail();
+  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
   sendSmtpEmail.sender = { email: "your-brevo-email@gmail.com", name: "MedLink" };
   sendSmtpEmail.to = [{ email }];
   sendSmtpEmail.subject = "Verify your email";
