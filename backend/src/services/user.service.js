@@ -205,7 +205,7 @@ async function forgotPassword(email) {
 
   try {
     await sendForgotPasswordOTP(email, otp);
-  } catch (err) {
+  } catch (err) { 
     console.error("Forgot password email error:", err.message);
   }
 

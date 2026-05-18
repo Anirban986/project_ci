@@ -179,7 +179,7 @@ async function loginUser(req, res) {
 // ================= FORGOT PASSWORD =================
 async function forgotPassword(req, res) {
   try {
-    const { email } = req.body;
+    const { email } = req.body; 
 
     const result = await userService.forgotPassword(email);
 
