@@ -31,7 +31,8 @@ jobs:
       EMAIL: ${{ secrets.EMAIL }}
       EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
       FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
-      RESEND_API_KEY: ${{secrets.RESEND_API_KEY}}
+      RESEND_API_KEY: ${{secrets.RESEND_API_KEY}} #added resend api key
+
     defaults:
       run:
         working-directory: backend
