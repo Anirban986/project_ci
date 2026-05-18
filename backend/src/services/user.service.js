@@ -11,16 +11,8 @@ const { sendForgotPasswordOTP } = require("../utils/mailer");
 
 dotenv.config();
 // Email setup
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  family: 4,  // ← forces IPv4
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+const { Resend } = require("resend");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // ================= HELPER =================
 function generateOTP() {
@@ -29,7 +21,8 @@ function generateOTP() {
 
 //=================== EMAIL =================
 async function sendOTPEmail(email, code) {
-  await transporter.sendMail({
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
     to: email,
     subject: "Verify your email",
     html: `
@@ -42,7 +35,6 @@ async function sendOTPEmail(email, code) {
     `,
   });
 }
-
 //register service
 
 async function registerUserService(userData) {
