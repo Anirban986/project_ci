@@ -19,7 +19,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 async function sendOTPEmail(email, code) {
   await sgMail.send({
     to: email,
-    from: "your-sendgrid-verified-email@gmail.com",
+    from: process.env.EMAIL,
     subject: "Verify your email",
     html: `
       <div style="font-family:sans-serif;text-align:center;">
