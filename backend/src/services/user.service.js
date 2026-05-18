@@ -13,29 +13,23 @@ dotenv.config();
 
 
 // ================= HELPER =================
-const SibApiV3Sdk = require("@getbrevo/brevo");
-
-const defaultClient = SibApiV3Sdk.ApiClient.instance;
-const apiKey = defaultClient.authentications["api-key"];
-apiKey.apiKey = process.env.BREVO_API_KEY;
-
-const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 async function sendOTPEmail(email, code) {
-  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-  sendSmtpEmail.sender = { email: "your-brevo-email@gmail.com", name: "MedLink" };
-  sendSmtpEmail.to = [{ email }];
-  sendSmtpEmail.subject = "Verify your email";
-  sendSmtpEmail.htmlContent = `
-    <div style="font-family:sans-serif;text-align:center;">
-      <h2>Email Verification</h2>
-      <p>Your verification code is:</p>
-      <h1 style="letter-spacing:5px;color:#4CAF50;">${code}</h1>
-      <p>This code will expire in 10 minutes.</p>
-    </div>
-  `;
-
-  await apiInstance.sendTransacEmail(sendSmtpEmail);
+  await sgMail.send({
+    to: email,
+    from: "your-sendgrid-verified-email@gmail.com",
+    subject: "Verify your email",
+    html: `
+      <div style="font-family:sans-serif;text-align:center;">
+        <h2>Email Verification</h2>
+        <p>Your verification code is:</p>
+        <h1 style="letter-spacing:5px;color:#4CAF50;">${code}</h1>
+        <p>This code will expire in 10 minutes.</p>
+      </div>
+    `,
+  });
 }
 //register service
 
