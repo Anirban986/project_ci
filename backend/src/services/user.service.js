@@ -13,27 +13,26 @@ dotenv.config();
 
 
 // ================= HELPER =================
-const Brevo = require("@getbrevo/brevo");
+const { TransactionalEmailsApi, SendSmtpEmail, ApiClient } = require("@getbrevo/brevo");
 
-const brevoClient = Brevo.ApiClient.instance;
-brevoClient.authentications["api-key"].apiKey = process.env.BREVO_API_KEY;
-
-const emailApi = new Brevo.TransactionalEmailsApi();
+const apiInstance = new TransactionalEmailsApi();
+apiInstance.authentications["api-key"].apiKey = process.env.BREVO_API_KEY;
 
 async function sendOTPEmail(email, code) {
-  await emailApi.sendTransacEmail({
-    sender: { email: "your-registered-brevo-email@gmail.com", name: "MedLink" },
-    to: [{ email }],
-    subject: "Verify your email",
-    htmlContent: `
-      <div style="font-family:sans-serif;text-align:center;">
-        <h2>Email Verification</h2>
-        <p>Your verification code is:</p>
-        <h1 style="letter-spacing:5px;color:#4CAF50;">${code}</h1>
-        <p>This code will expire in 10 minutes.</p>
-      </div>
-    `,
-  });
+  const sendSmtpEmail = new SendSmtpEmail();
+  sendSmtpEmail.sender = { email: "your-brevo-registered-email@gmail.com", name: "MedLink" };
+  sendSmtpEmail.to = [{ email }];
+  sendSmtpEmail.subject = "Verify your email";
+  sendSmtpEmail.htmlContent = `
+    <div style="font-family:sans-serif;text-align:center;">
+      <h2>Email Verification</h2>
+      <p>Your verification code is:</p>
+      <h1 style="letter-spacing:5px;color:#4CAF50;">${code}</h1>
+      <p>This code will expire in 10 minutes.</p>
+    </div>
+  `;
+
+  await apiInstance.sendTransacEmail(sendSmtpEmail);
 }
 //register service
 
