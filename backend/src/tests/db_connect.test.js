@@ -10,5 +10,5 @@ describe("PostgreSQL Database Connection", () => {
 });
 
 afterAll(async () => {
-  await pool.end();
+  //await pool.end();
 });

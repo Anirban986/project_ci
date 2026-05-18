@@ -27,7 +27,10 @@ jobs:
     env:
       NODE_ENV: test
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/testdb
-
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      EMAIL: ${{ secrets.EMAIL }}
+      EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+      FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
     defaults:
       run:
         working-directory: backend
