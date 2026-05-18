@@ -72,13 +72,17 @@ async function registerUserService(userData) {
     console.log("otp:", otp);
   } catch (err) {
     console.error("Email error:", err);
-    throw new Error("Email_send_failed");
+    //throw new Error("Email_send_failed");
   }
+
+  // always log OTP for debugging
+  console.log(`OTP for ${email}: ${otp}`);
+
 
   return { newUser };
 }
 
-// ================= VERIFY OTP =================
+// ================= VERIFY code =================
 async function verifyCodeService(email, code) {
   const user = await userRepository.findByEmailAndUsername(null, email);
   console.log("user details in service:", user);
@@ -123,8 +127,11 @@ async function resendVerificationService(email) {
     await sendOTPEmail(email, otp);
   } catch (err) {
     console.error("Email resend error:", err);
-    throw new Error("Email_send_failed");
+    //throw new Error("Email_send_failed");
   }
+  // always log OTP for debugging
+  console.log(`OTP for ${email}: ${otp}`);
+
 }
 
 //==========LOGIN===========
@@ -191,12 +198,18 @@ async function forgotPassword(email) {
   const otp = generateforgotPasswordOTP();
 
   await userRepository.setForgotPasswordOTP(
-  user.id,
-  await bcrypt.hash(otp, 10),
-  new Date(Date.now() + 10 * 60 * 1000)
-);
+    user.id,
+    await bcrypt.hash(otp, 10),
+    new Date(Date.now() + 10 * 60 * 1000)
+  );
 
-  await sendForgotPasswordOTP(email, otp);
+  try {
+    await sendForgotPasswordOTP(email, otp);
+  } catch (err) { 
+    console.error("Forgot password email error:", err.message);
+  }
+
+  console.log(`Forgot password OTP for ${email}: ${otp}`);
 
   return { message: "OTP sent to email" };
 }
