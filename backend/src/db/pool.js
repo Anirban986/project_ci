@@ -12,7 +12,7 @@ const isProduction =
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-
+  family: 4,  // ← forces IPv4, fixes Render IPv6 routing issue
   ssl: isProduction
     ? {
         rejectUnauthorized: false,
