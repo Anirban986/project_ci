@@ -15,6 +15,7 @@ const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
   secure: true,
+  family: 4,  // ← forces IPv4
   auth: {
     user: process.env.EMAIL,
     pass: process.env.EMAIL_PASS,
@@ -27,16 +28,20 @@ function generateOTP() {
 }
 
 //=================== EMAIL =================
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  family: 4,  // ← forces IPv4
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASS,
-  },
-});
+async function sendOTPEmail(email, code) {
+  await transporter.sendMail({
+    to: email,
+    subject: "Verify your email",
+    html: `
+      <div style="font-family:sans-serif;text-align:center;">
+        <h2>Email Verification</h2>
+        <p>Your verification code is:</p>
+        <h1 style="letter-spacing:5px;color:#4CAF50;">${code}</h1>
+        <p>This code will expire in 10 minutes.</p>
+      </div>
+    `,
+  });
+}
 
 //register service
 
