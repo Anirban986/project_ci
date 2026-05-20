@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from api.routes.app import app
+from api.app import app
 import pytest
 
 @pytest.fixture
